@@ -1,93 +1,394 @@
-# QualiRoot — AI-powered API Root Cause Analysis Copilot
+# QualiRoot – AI-Powered Root Cause Analysis
 
-A two-panel investigation workspace built to the challenge's mandatory stack: React + Redux, Python + FastAPI, LangGraph + Groq, and PostgreSQL (with SQLite fallback for a quick local run).
+<p align="center">
+  <strong>Intelligent Investigation. Evidence-Based Decisions.</strong>
+</p>
 
-## What it demonstrates
+<p align="center">
+  An AI-powered Root Cause Analysis (RCA) application designed for pharmaceutical API manufacturing.
+</p>
 
-- Natural-language incident intake from pasted deviation narratives or emails.
-- PDF text extraction and AI-assisted form population.
-- Conversational edit mode that sends the existing investigation state plus the requested change to the model.
-- LangGraph workflow with separate intake and edit nodes.
-- Structured 5 Whys, Ishikawa/fishbone categories, potential causes with evidence for/against and confidence, missing evidence, provisional risk rationale, and CAPA suggestions.
-- Reviewable/editable fields and save-to-database endpoint.
-- No automatic batch disposition, root-cause confirmation, or CAPA approval. QA review remains mandatory.
+---
 
-## Architecture
+## About the Project
 
-`React UI → Redux investigation state → FastAPI → LangGraph (intake/edit) → Groq ChatGroq → structured RCA JSON → Redux form state → SQL database on save`
+**QualiRoot** is an AI-powered Root Cause Analysis application that helps pharmaceutical manufacturing teams investigate production incidents and quality deviations through an intelligent, structured workflow.
 
-PDFs are parsed with PyMuPDF before being passed into the intake graph. The application only accepts selectable-text PDFs; OCR for scanned documents is not included in this demo.
+Traditional root cause investigations can involve significant manual effort in reviewing incident descriptions, identifying potential causes, gathering evidence and preparing corrective and preventive actions.
 
-## Run locally (recommended)
+QualiRoot simplifies this process by combining Large Language Models (LLMs), LangGraph and a modern web application.
 
-### 1. Backend
+Users can provide incident information through text or PDF documents. The AI processes the information, extracts relevant details and automatically populates the investigation form.
+
+The application assists users with:
+
+- Incident information extraction.
+- Automated RCA form population.
+- Five Whys analysis.
+- Fishbone (Ishikawa) analysis.
+- Potential root cause identification.
+- Missing evidence identification.
+- Investigation recommendations.
+- Corrective and Preventive Actions (CAPA).
+- Human review and editing.
+- Investigation storage and retrieval.
+
+**Important:** QualiRoot is an investigation assistance tool. AI-generated findings and recommendations require human review and appropriate Quality Assurance approval.
+
+---
+
+## Key Features
+
+### 1. AI-Powered Incident Intake
+- Accept incident descriptions through text input.
+- Extract information from uploaded PDF documents.
+- Identify relevant manufacturing and incident details.
+- Automatically populate RCA investigation fields.
+
+### 2. Five Whys Analysis
+- Generates a structured Five Whys investigation.
+- Connects successive why questions and answers.
+- Helps investigate underlying causes.
+
+### 3. Fishbone Analysis
+Organizes potential causes into six categories:
+
+| Category | Investigation Area |
+|---|---|
+| Man | Personnel and training |
+| Machine | Equipment and machinery |
+| Method | Procedures and processes |
+| Material | Raw materials and components |
+| Measurement | Instruments and measurements |
+| Environment | Environmental conditions |
+
+### 4. Potential Root Cause Analysis
+- Identifies potential root causes.
+- Evaluates supporting and contradicting evidence.
+- Provides confidence assessments.
+- Suggests verification activities.
+
+### 5. Missing Evidence Identification
+Identifies additional records and information required to strengthen the investigation.
+
+### 6. CAPA Recommendations
+Generates corrective and preventive action recommendations, including:
+- Action descriptions.
+- CAPA classification.
+- Rationale.
+- Linked potential root causes.
+- Responsible owners.
+- Suggested completion timelines.
+- Effectiveness checks.
+
+### 7. Human Review and Editing
+Users can review, modify and refine AI-generated investigation information before saving it.
+
+### 8. Investigation Management
+- Save investigations.
+- Retrieve previously saved investigations.
+- Update existing investigation records.
+- Maintain persistent investigation data using PostgreSQL.
+
+---
+
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | React 18 |
+| State Management | Redux |
+| Build Tool | Vite |
+| Styling | CSS |
+| Backend | Python |
+| API Framework | FastAPI |
+| AI Workflow | LangGraph |
+| Large Language Model | Groq |
+| Database | PostgreSQL |
+| Document Processing | PDF Text Extraction |
+| API Testing | FastAPI Swagger UI |
+| Containerization | Docker |
+
+---
+
+## System Architecture
+
+```text
+              USER
+                |
+                v
+       REACT FRONTEND
+                |
+          REDUX STORE
+                |
+                v
+        FASTAPI BACKEND
+                |
+        +-------+-------+
+        |               |
+        v               v
+   TEXT INPUT       PDF EXTRACTION
+        |               |
+        +-------+-------+
+                |
+                v
+        LANGGRAPH WORKFLOW
+                |
+                v
+          GROQ LLM
+                |
+                v
+       STRUCTURED AI OUTPUT
+                |
+        +-------+-------+
+        |               |
+        v               v
+    RCA ANALYSIS     CAPA
+        |               |
+        +-------+-------+
+                |
+                v
+       FRONTEND FORM
+       POPULATION
+                |
+                v
+        HUMAN REVIEW
+                |
+                v
+          POSTGRESQL
+```
+
+---
+
+## Project Structure
+
+```text
+QualiRoot/
+│
+├── backend/
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── graph.py
+│   │   ├── database.py
+│   │   └── schemas.py
+│   │
+│   ├── migrate_sqlite_to_postgres.py
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── .env.example
+│
+├── frontend/
+│   ├── src/
+│   │   ├── main.jsx
+│   │   ├── store.js
+│   │   └── style.css
+│   │
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── vite.config.js
+│   └── Dockerfile
+│
+├── sample_docs/
+│   ├── sample_api_deviation.pdf
+│   └── sample_api_deviation_email.txt
+│
+├── docker-compose.yml
+├── .gitignore
+└── README.md
+```
+
+---
+
+## Installation and Setup
+
+### Prerequisites
+
+Install the following:
+
+- Python 3.10 or later.
+- Node.js and npm.
+- PostgreSQL.
+- Git.
+- Groq API key.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Ravi7907/QualiRoot.git
+```
+
+```bash
+cd QualiRoot
+```
+
+### 2. Backend Setup
+
+Navigate to the backend directory:
 
 ```bash
 cd backend
-python -m venv .venv
-# Windows PowerShell: .venv\\Scripts\\Activate.ps1
-# macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
-copy .env.example .env   # Windows; on macOS/Linux use: cp .env.example .env
 ```
 
-Add your Groq key to `backend/.env`:
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file inside the `backend` directory.
+
+Add your configuration:
 
 ```env
-GROQ_API_KEY=your_key_here
-GROQ_MODEL=llama-3.3-70b-versatile
-# Optional. Omit DATABASE_URL for a local SQLite file.
-# DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/rca_copilot
+GROQ_API_KEY=your_groq_api_key
+DATABASE_URL=postgresql://username:password@localhost:5432/quali_root
 ```
 
-Run:
+Replace the placeholder values with your own credentials.
+
+**Security:** Never commit your `.env` file or expose API keys and database passwords.
+
+### 4. Database Setup
+
+Create a PostgreSQL database named:
+
+```sql
+CREATE DATABASE quali_root;
+```
+
+Ensure PostgreSQL is running and the database connection details in `.env` are correct.
+
+### 5. Start the Backend
+
+From the `backend` directory, execute:
 
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
 
-### 2. Frontend (new terminal)
+Backend:
+
+```text
+http://localhost:8000
+```
+
+API documentation:
+
+```text
+http://localhost:8000/docs
+```
+
+### 6. Frontend Setup
+
+Open another terminal and navigate to the frontend directory:
 
 ```bash
 cd frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-Open http://localhost:5173. FastAPI docs: http://localhost:8000/docs.
+Frontend:
 
-### 3. PostgreSQL option
+```text
+http://localhost:5173
+```
 
-Start PostgreSQL and set `DATABASE_URL` in `backend/.env`. A Docker Compose setup is also provided. For Compose, put your Groq key in `backend/.env`, then from the project root run `docker compose up --build`.
+---
 
-## Demo workflow
+## Application Workflow
 
-1. Open the app and click **Load sample API deviation** in the copilot, or paste the content from `sample_docs/sample_deviation_email.txt`.
-2. Review the automatically populated incident, 5 Whys, fishbone, risk, evidence gaps and CAPA.
-3. In the copilot, send: `The batch number is MFH261104B, not MFH261104A. The equipment ID is DR-205. Preserve all other information.`
-4. Upload `sample_docs/sample_api_deviation.pdf` to demonstrate PDF extraction.
-5. Edit any AI-generated form fields for QA review and click **Save investigation**.
+1. User enters a pharmaceutical manufacturing incident description or uploads a PDF.
+2. FastAPI receives the input.
+3. PDF content is extracted when a document is uploaded.
+4. LangGraph orchestrates the AI investigation workflow.
+5. Groq processes the incident information.
+6. Structured investigation results are generated.
+7. React and Redux update the RCA form with AI-generated information.
+8. The user reviews and edits the generated findings.
+9. The investigation is saved to PostgreSQL.
+10. Previously saved investigations can be retrieved and updated.
 
-## API endpoints
+---
 
-- `GET /api/health` — backend and AI configuration status.
-- `POST /api/intake` — `{ "text": "...", "current": {} }`.
-- `POST /api/edit` — `{ "instruction": "...", "current": { ... } }`.
-- `POST /api/extract` — multipart PDF upload (`file`).
-- `POST /api/investigations` — save an investigation JSON payload.
-- `GET /api/investigations` — list recent saved records.
+## Example Investigation Scenario
 
-## Important limitations / quality safeguards
+**Incident:** Post-Use Filter Integrity Test Failure
 
-- The Groq API key is required for actual LLM extraction and conversational editing. Without it, intake uses a conservative demo fallback; fallback editing preserves the record and records the requested edit as a note rather than pretending it changed a field.
-- AI root causes are hypotheses, not confirmed conclusions. Confidence is not proof. Confirm with batch records, equipment logs, calibration/maintenance history, analytical data, interviews, training records and trend data.
-- Risk level is a preliminary screening, not a formal FMEA or final product-impact decision. A qualified Quality Unit must approve investigation scope, batch disposition and CAPA.
-- PDF extraction uses embedded text; scanned-image PDFs need OCR before use.
-- This is a technical challenge prototype, not a validated GxP / 21 CFR Part 11 system. It does not implement electronic signatures, audit trails, role-based approvals, validated access controls, retention policies or validated infrastructure. Do not use it for live GMP records.
+| Field | Details |
+|---|---|
+| Incident ID | DEV-2026-084 |
+| Product | Caffeine API |
+| Batch | CAF261108D |
+| Process | Final Filtration |
+| Equipment | Filter Assembly FA-207 |
+| Incident Date | 08-Nov-2026 |
+| Test Result | 18 kPa pressure decay |
+| Acceptance Limit | ≤10 kPa |
 
-## Research basis
+The application assists with identifying potential causes, such as filter membrane damage, incorrect assembly, sealing failure and instrument measurement issues.
 
-The workflow is informed by ICH Q9(R1) risk-based quality management, ICH Q10 structured investigations and CAPA effectiveness evaluation, and FDA ICH Q7A expectations for API manufacturing records, equipment qualification, internal audits and product quality review. See links in the submission notes or official guidance:
-- FDA: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/q9r1-quality-risk-management
-- FDA: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/q10-pharmaceutical-quality-system
-- FDA: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/q7a-good-manufacturing-practice-guidance-active-pharmaceutical-ingredients
+It also identifies missing evidence, recommends verification activities and generates CAPA recommendations.
+
+All potential causes remain subject to evidence-based verification.
+
+---
+
+## Future Enhancements
+
+- Email-based incident intake.
+- Advanced document processing.
+- Improved investigation analytics and reporting.
+- Export investigation reports as PDF.
+- Role-based access control.
+- Enhanced audit trail.
+- Investigation dashboards.
+- Advanced evidence traceability.
+
+---
+
+## Project Objective
+
+The objective of QualiRoot is to demonstrate how Artificial Intelligence and workflow orchestration can support structured root cause investigations in pharmaceutical manufacturing.
+
+By combining AI-assisted information extraction, investigation methodologies and persistent data management, QualiRoot aims to reduce manual investigation effort and improve the consistency of RCA documentation.
+
+---
+
+## Author
+
+**Ravi Sabhahith**
+
+GitHub: https://github.com/Ravi7907
+
+---
+
+<p align="center">
+  <strong>QualiRoot – Insurance Simplified? No. Investigation Simplified.</strong>
+</p>
