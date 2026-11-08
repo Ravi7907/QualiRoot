@@ -1,0 +1,15 @@
+Subject: Deviation Report QN-2026-041 — Dryer temperature excursion during API drying
+
+Date/time: 04-Nov-2026, 14:20
+Site: Unit 2 / API Block B
+Department: API Manufacturing / Production
+Product: Metformin Hydrochloride API
+Batch: MFH261104A
+Process stage: Final drying
+Equipment: Dryer DR-204
+
+During the final drying stage, the operator observed that the product temperature remained at 68°C for 42 minutes, although the approved batch instruction specifies 60–65°C. The high temperature alarm was acknowledged but the event was not escalated immediately. An in-process sample was collected after the event; assay and related substances results are pending. No product was transferred from the dryer. The batch has been placed on QA hold.
+
+Initial interview indicates the temperature controller was recently serviced on 02-Nov-2026. The calibration certificate, maintenance work order, alarm history, executed batch record, trend data and impact assessment are requested. Reported by Production Supervisor, API Manufacturing.
+
+This is a fictional training scenario. All names, identifiers and events are invented.

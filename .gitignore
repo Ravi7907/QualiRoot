@@ -1,0 +1,32 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Database
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs and backups
+*.log
+*.bak
+*.backup
+
+# OS
+.DS_Store
+Thumbs.db
